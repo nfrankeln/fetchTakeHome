@@ -7,15 +7,7 @@ export default function Navbar(){
       .then(response => console.log(response))
 
     }
-    function getDogs(){
-        const breeds=["African Hunting Dog","Affenpinscher",
-        "Afghan Hound"]
-        
-        axios.get("https://frontend-take-home-service.fetch.com/dogs/search",{params:{
-            breeds:breeds,
-        }})
-        .then(response=>console.log(response.data.resultIds))
-    }
+
     return(
         <>
         <h1>NavBar</h1>

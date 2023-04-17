@@ -1,5 +1,6 @@
 import { useLoaderData, Link, useParams } from "react-router-dom"
 import axios from "axios"
+import DogCard from "./DogCard"
 export default function SearchResults(){
     const dogs = useLoaderData()
     console.log(dogs)
@@ -7,7 +8,7 @@ export default function SearchResults(){
         <>
         <div>SearchResults</div>
         {dogs.map((dog)=>
-        <li>{dog.name} {dog.age} {dog.breed} {dog.zip_code}</li>
+        <li><DogCard {...dog}/></li>
         )}
         </>
     )
