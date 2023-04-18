@@ -2,19 +2,22 @@ import axios from "axios"
 import { useEffect } from "react"
 import { useLoaderData, Link, Outlet } from "react-router-dom"
 import SearchResults from "../components/SearchResults"
+import BreedSearchMenu from "../components/BreedsFilter"
+import SplitScreenLayout from "../layouts/SplitScreenLayout"
+import { Stack,Box } from "@chakra-ui/react"
+
 
 export default function SearchPage(){
     const {breedNames, dogIds} = useLoaderData()
-    console.log(breedNames)
-    
-      
+   
     return(<>
-        <h1>SearchPage</h1>
-       <form action="">
-        <label htmlFor="">Search Breeds</label>
-        <input type="text" />
-       </form>
+        <SplitScreenLayout>
+            <Box p={5}>
+                <BreedSearchMenu breedNames={breedNames}/>
+            </Box>
         <Outlet/>
+        </SplitScreenLayout>
+        
         </>
     )
 }
