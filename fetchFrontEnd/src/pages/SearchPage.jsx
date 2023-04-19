@@ -4,7 +4,8 @@ import { useLoaderData, Link, Outlet } from "react-router-dom"
 import SearchResults from "../components/SearchResults"
 import BreedSearchMenu from "../components/BreedsFilter"
 import SplitScreenLayout from "../layouts/SplitScreenLayout"
-import { Stack,Box } from "@chakra-ui/react"
+import { Stack,Box,Flex } from "@chakra-ui/react"
+import Filters from "../components/Filters"
 
 
 export default function SearchPage(){
@@ -12,9 +13,9 @@ export default function SearchPage(){
    
     return(<>
         <SplitScreenLayout>
-            <Box p={5}>
-                <BreedSearchMenu breedNames={breedNames}/>
-            </Box>
+            <Flex p={5} flexDirection="column" justifyContent={"center"} >
+                <Filters breedNames={breedNames}/>
+            </Flex>
         <Outlet/>
         </SplitScreenLayout>
         

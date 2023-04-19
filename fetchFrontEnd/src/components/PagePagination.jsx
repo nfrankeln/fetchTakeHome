@@ -17,7 +17,7 @@ export function PagePagination({ currentPage, totalPages, onPageChange }) {
 // <Menu><Menu/>
   return (
     <>
-    {currentPage > 1 && <Button onClick={()=>handlePageChange(currentPage+1)}>Previous</Button>}
+    {currentPage > 1 && <Button onClick={()=>handlePageChange(currentPage - 1)}>Previous</Button>}
     <Menu>
        <MenuButton as={Button}>{currentPage}/{totalPages}</MenuButton>
     <MenuList>

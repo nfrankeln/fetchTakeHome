@@ -12,7 +12,7 @@ function App() {
       <Route path="/" element={<Navbar/>}>
         <Route index element={<LoginPage/>}/>
         <Route path="search" element={<SearchPage/>} loader={breedsLoader}>
-          <Route path=":breed?/:page?" element={<SearchResults/>} loader={dogsLoader} />
+          <Route path=":breed?/:page?/:sort?" element={<SearchResults/>} loader={dogsLoader} />
           </Route>
         {/* <Route path="about" element={<MatchPage/>} /> */}
       </Route>
