@@ -18,7 +18,8 @@ export default function BreedsFilter({breedNames}){
                             setSearchParams(searchParams)}
 
     else {
-      setSearchParams('')
+        searchParams.delete('breeds')
+      setSearchParams(searchParams)
     }},[selectedBreeds,setSelectedBreeds])
    
 

@@ -1,4 +1,4 @@
-import { useLoaderData, useSearchParams, useNavigate } from "react-router-dom"
+import { useLoaderData, useSearchParams } from "react-router-dom"
 import axios from "axios"
 import DogCard from "./DogCard"
 import { Box, Flex, FormControl, FormLabel, Select, SimpleGrid } from "@chakra-ui/react"
@@ -19,9 +19,6 @@ export default function SearchResults(){
         setSort(params.get('sort') || 'breed:asc' )
     }, [setCurrentPage, setSort, params]);
 
-    const navigate = useNavigate()
-    console.log("render")
-    console.log(apiInfo)
     
     
     return(
@@ -43,6 +40,8 @@ export default function SearchResults(){
             >
             <option value='breed:asc'>Breed A-Z</option>
             <option value='breed:desc'>Breed Z-A</option>
+            <option value='age:asc'>Youngest</option>
+            <option value='age:desc'>Oldest</option>
         </Select>
         </FormControl>
         </Flex>
@@ -73,23 +72,31 @@ export async function dogsLoader({request}){
     let params = {
         'from':0
     }
-
+    const states = new URL(request.url).searchParams.get('states')
+    const ageMin = new URL(request.url).searchParams.get('ageMin')
+    const ageMax = new URL(request.url).searchParams.get('ageMax')
     const page = new URL(request.url).searchParams.get('page');
-    console.log("pageCheck",page)
     const sort = new URL(request.url).searchParams.get('sort')
     let breeds = new URL(request.url).searchParams.get('breeds')
-    console.log("pre",breeds)
+    
+    if (states){
+        console.log("statesArray",states)
+      let response = await axios.post("https://frontend-take-home-service.fetch.com/locations/search",{'states':states})
+      console.log("statesZip",response)
+
+    }
+    
     if (breeds){
         breeds = [breeds]
         breeds = breeds.join().split(',');
         params['breeds'] = breeds
-        console.log('breeds', params['breeds'])
     }
-    
-    
-    
-    
-    
+    if(ageMin){
+        params['ageMin']=ageMin
+    }
+    if (ageMax){
+        params['ageMax']=ageMax
+    }
     
     if(page){
         params['from']=(page-1)*25
@@ -97,9 +104,6 @@ export async function dogsLoader({request}){
     if(sort){
         params['sort']= sort
     }
-    // if(breeds){
-    //     params['breeds']=breeds
-    // }
     else{
         params['sort']="breed:asc"
     }
@@ -122,8 +126,17 @@ export async function dogsLoader({request}){
       }
 
 try{
-    const response = await axios.post("https://frontend-take-home-service.fetch.com/dogs",dogIds,{withCredentials: true})
+    let response = await axios.post("https://frontend-take-home-service.fetch.com/dogs",dogIds,{withCredentials: true})
     apiInfo['dogs'] = response.data
+    const zipCodes = response.data.map((dog) => dog.zip_code)
+    response = await axios.post("https://frontend-take-home-service.fetch.com/locations",zipCodes,{withCredentials: true})
+    apiInfo['dogs'].forEach((dog, index) => {
+        
+          const location = response.data[index];
+          dog.city = location.city;
+          dog.state = location.state;
+        }
+      );
     return apiInfo
 }
 catch (error) {

@@ -4,6 +4,7 @@ import { useEffect,useState,useRef } from "react"
 import { useSearchParams } from "react-router-dom";
 import AgeSlider from "./AgeSlider";
 import BreedsFilter from "./BreedsFilter";
+import LocationFilter from "./LocationFilter";
 export default function Filters({breedNames}){
     
 
@@ -15,6 +16,7 @@ export default function Filters({breedNames}){
         <Heading textAlign={'center'}>Filters</Heading>
         <BreedsFilter breedNames={breedNames}/>
         <AgeSlider/>
+        <LocationFilter/>
         </Flex>
         </>
       );

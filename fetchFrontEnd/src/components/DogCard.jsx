@@ -1,6 +1,6 @@
 import { Card, CardBody, CardFooter,Flex, HStack,VStack ,Heading, Image, Icon, Stack, Tag, Text, Box, Center } from "@chakra-ui/react";
 import {AiFillHeart} from 'react-icons/ai'
-export default function DogCard({name,img,age,breed,zip_code}){
+export default function DogCard({name,img,age,breed,zip_code,city,state}){
 
     return(
         <>
@@ -13,7 +13,7 @@ export default function DogCard({name,img,age,breed,zip_code}){
                 <HStack w={'100%'} justify={"space-between"}>
                 <VStack alignItems={'flex-start'}>
                 <Text fontSize={"md"}>{breed}</Text>
-                <Text fontSize={"md"}>Chicago, IL {zip_code} </Text>
+                <Text fontSize={"md"}>{city}, {state}</Text>
                 </VStack>
                 <Flex p={2}  borderWidth={1} borderColor={"black"} borderRadius={"full"}>
                 <Icon boxSize={10} as={AiFillHeart}/>
