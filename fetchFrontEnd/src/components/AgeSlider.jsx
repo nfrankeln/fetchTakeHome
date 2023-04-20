@@ -11,10 +11,19 @@ export default function AgeSlider(){
     useEffect(()=>{
       updateSearchParams(ageMin,ageMax)
       },[sliderChanged])
+      
    function updateSearchParams(ageMin,ageMax){
-    if(ageMin >= 0){
+    if (ageMin ===0){
+      searchParams.delete('ageMin')
+      setSearchParams(searchParams)
+    }
+    if (ageMax ===20){
+      searchParams.delete('ageMax')
+      setSearchParams(searchParams)
+    }
+    if(ageMin > 0){
       setSearchParams((prevParams) => prevParams.set('ageMin', `${ageMin}`))}
-    if(ageMax <= 20){
+    if(ageMax < 20){
       setSearchParams((prevParams) => prevParams.set('ageMax', `${ageMax}`))}
     searchParams.delete('page')
     setSearchParams(searchParams)

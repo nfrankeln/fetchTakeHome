@@ -13,7 +13,7 @@ export default function BreedsFilter({breedNames}){
     let params = new URL(document.location).searchParams;
     useEffect(()=>{
     if(selectedBreeds.size > 0){
-      setSearchParams((prevParams) => prevParams.set('breeds', `${[...selectedBreeds]}`))
+      setSearchParams((prevParams) => prevParams.set('breeds', [...selectedBreeds].join(",")))
                             searchParams.delete('page')
                             setSearchParams(searchParams)}
 

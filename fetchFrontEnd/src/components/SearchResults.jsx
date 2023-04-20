@@ -1,14 +1,20 @@
 import { useLoaderData, useSearchParams } from "react-router-dom"
-import axios from "axios"
 import DogCard from "./DogCard"
-import { Box, Flex, FormControl, FormLabel, Select, SimpleGrid } from "@chakra-ui/react"
+import { Box, Flex, FormControl, FormLabel, Input, Select, SimpleGrid } from "@chakra-ui/react"
 import { useState,useEffect } from "react"
 import { PagePagination } from "./PagePagination"
+import LocationSearch from "./LocationSearch"
+import FilterTags from "./FilterTags"
+import  fetchLocationsFromZip  from "../utils/fetchLocationsFromZip"
+import  fetchDogIds  from "../utils/fetchDogIds"
+import  fetchDogsById  from "../utils/fetchDogsById"
+import  fetchLocations  from "../utils/fetchLoactions"
+import  addLocationToDogs  from "../helpers/addLocationToDogs"
 
 
 export default function SearchResults(){
     const apiInfo = useLoaderData()
-    const {dogs, next, pages } = apiInfo
+    const {dogs, pages } = apiInfo
     const [currentPage,setCurrentPage]=useState(1)
     const [sort,setSort] = useState('breed:asc')
     let [searchParams, setSearchParams] = useSearchParams();
@@ -23,7 +29,12 @@ export default function SearchResults(){
     
     return(
         <>
-        <Flex p={5} justifyContent={"flex-end"}>
+        <Flex p={5} justifyContent={"space-between"}>
+            
+            <LocationSearch/>
+            <FilterTags/>
+
+
             <FormControl w={{base:'100%',md:'25%'}}>
                 <FormLabel>Sort By:</FormLabel>
         <Select onChange={(e)=>
@@ -47,99 +58,97 @@ export default function SearchResults(){
         </Flex>
 
         <SimpleGrid minChildWidth={'275px'} spacing={6} padding='10px'>
-        {dogs.map((dog)=>
+        {
+        dogs ?
+        dogs.map((dog)=>
         <Box key={`box-${dog.id}`} ><DogCard key={`dog-${dog.id}`} {...dog}/></Box>
-        )}
+        ) :
+            <div>No Dogs Found!</div>
+        
+        }
       
         <Box>  
         
-        <PagePagination currentPage={currentPage}
+        { pages > 0 && <PagePagination currentPage={currentPage}
                         totalPages={pages}
                         onPageChange={(selectedPage) => {
                             setSearchParams((prevParams) => prevParams.set('page', `${selectedPage}`))
                             setSearchParams(searchParams);
-                          }}  />
+                          }}  /> }
         </Box>
         </SimpleGrid>
         </>
     )
 }
 //Loaders
-export async function dogsLoader({request}){
-
-    
-
-    let params = {
-        'from':0
+export async function dogsLoader({ request }) {
+    const params = {
+      from: 0,
+      sort: "breed:asc"
+    };
+  
+    const urlSearchParams = new URL(request.url).searchParams;
+    const zipCodes = urlSearchParams.get("zipCodes");
+    const ageMin = urlSearchParams.get("ageMin");
+    const ageMax = urlSearchParams.get("ageMax");
+    const page = urlSearchParams.get("page");
+    const sort = urlSearchParams.get("sort");
+    let breeds = urlSearchParams.get("breeds");
+  
+//if a zip code was sent get zipCodes around it 
+    if (zipCodes) {
+     const response = await fetchLocationsFromZip(zipCodes)
+     if(response.length>0){
+        params.zipCodes = response.map(
+            (location) => location.zip_code
+          );
+     }
+      
     }
-    const states = new URL(request.url).searchParams.get('states')
-    const ageMin = new URL(request.url).searchParams.get('ageMin')
-    const ageMax = new URL(request.url).searchParams.get('ageMax')
-    const page = new URL(request.url).searchParams.get('page');
-    const sort = new URL(request.url).searchParams.get('sort')
-    let breeds = new URL(request.url).searchParams.get('breeds')
-    
-    if (states){
-        console.log("statesArray",states)
-      let response = await axios.post("https://frontend-take-home-service.fetch.com/locations/search",{'states':states})
-      console.log("statesZip",response)
-
+//  
+    if (breeds) {
+      breeds = breeds.split(",");
+        console.log(breeds)
+      params.breeds = breeds
     }
-    
-    if (breeds){
-        breeds = [breeds]
-        breeds = breeds.join().split(',');
-        params['breeds'] = breeds
+    if (ageMin) {
+      params.ageMin = ageMin;
     }
-    if(ageMin){
-        params['ageMin']=ageMin
+    if (ageMax) {
+      params.ageMax = ageMax;
     }
-    if (ageMax){
-        params['ageMax']=ageMax
+    if (page) {
+      params.from = (page - 1) * 25;
     }
-    
-    if(page){
-        params['from']=(page-1)*25
+    if (sort) {
+      params.sort = sort;
     }
-    if(sort){
-        params['sort']= sort
-    }
-    else{
-        params['sort']="breed:asc"
-    }
-    let apiInfo ={
-        "pages":null
-    }
-    let dogIds=null
-    let total = 0
-   
-
+    const apiInfo = {
+      pages: null
+    };
     try {
-        let response = await axios.get('https://frontend-take-home-service.fetch.com/dogs/search',
-        {params:params},
-        {withCredentials: true,});
-        dogIds = response.data.resultIds;
-        total = Math.floor(response.data.total/response.data.resultIds.length)
-        apiInfo['pages'] = total
-      } catch (error) {
-        console.log(error);
-      }
+      const {dogIds,totalDogs} = await fetchDogIds(params)
+      console.log(dogIds)
+      const total = Math.floor(totalDogs / dogIds.length);
+      console.log(total)
+      apiInfo.pages = total;
 
-try{
-    let response = await axios.post("https://frontend-take-home-service.fetch.com/dogs",dogIds,{withCredentials: true})
-    apiInfo['dogs'] = response.data
-    const zipCodes = response.data.map((dog) => dog.zip_code)
-    response = await axios.post("https://frontend-take-home-service.fetch.com/locations",zipCodes,{withCredentials: true})
-    apiInfo['dogs'].forEach((dog, index) => {
-        
-          const location = response.data[index];
-          dog.city = location.city;
-          dog.state = location.state;
-        }
-      );
-    return apiInfo
-}
-catch (error) {
-    console.log(error);
+      const dogObjects = await fetchDogsById(dogIds)
+      console.log(dogObjects)
+      if (dogObjects.length < 1){
+        apiInfo.dogs=0
+        return apiInfo
+      }
+      const zipCodes = dogObjects.map((dog) => dog.zip_code);
+      console.log(zipCodes)
+      const locationObjects = await fetchLocations(zipCodes)
+      console.log(locationObjects)
+      addLocationToDogs(locationObjects,dogObjects)
+      apiInfo.dogs = dogObjects
+    } catch (error) {
+      console.log(error);
+    }
+  
+    return apiInfo;
   }
-}
+  
