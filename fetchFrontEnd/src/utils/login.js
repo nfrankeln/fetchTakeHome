@@ -10,12 +10,16 @@ import axios from 'axios';
  */
 export default async function login(data) {
   try {
-    const response = await axios.post('https://frontend-take-home-service.fetch.com/auth/login', { ...data }, { withCredentials: true });
+    const response = await axios.post(
+      'https://frontend-take-home-service.fetch.com/auth/login',
+      { ...data },
+      { withCredentials: true }
+    );
     if (response.status === 200) {
       return true;
     }
     return false;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error);
   }
 }

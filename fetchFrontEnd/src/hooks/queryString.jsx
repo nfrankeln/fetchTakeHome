@@ -15,10 +15,10 @@ function useQueryString() {
   }, [window.location.search]);
 
   function deleteQueryString(key) {
-    setQueryString(prev => prev.filter(query => query.key !== key));
+    setQueryString((prev) => prev.filter((query) => query.key !== key));
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.delete(key);
-    window.history.replaceState(null, null, `?${searchParams.toString()}`)
+    window.history.replaceState(null, null, `?${searchParams.toString()}`);
     window.location.reload();
   }
 
@@ -26,4 +26,3 @@ function useQueryString() {
 }
 
 export default useQueryString;
-

@@ -1,7 +1,6 @@
-import axios from "axios";
-import getBoundingBox from "./getBoundingBox";
-import  getCoordinates  from "./getCoordinates";
-
+import axios from 'axios';
+import getBoundingBox from './getBoundingBox';
+import getCoordinates from './getCoordinates';
 
 /**
  * Fetches a list of locations within a certain distance of a given zip code.
@@ -17,7 +16,7 @@ export default async function fetchLocationsFromZip(zipCode) {
 
   try {
     const response = await axios.post(
-      "https://frontend-take-home-service.fetch.com/locations/search",
+      'https://frontend-take-home-service.fetch.com/locations/search',
       { geoBoundingBox, size: 100 },
       { withCredentials: true }
     );
@@ -30,6 +29,6 @@ export default async function fetchLocationsFromZip(zipCode) {
       return [];
     }
   } catch (error) {
-    throw new Error("Failed to fetch locations from API");
+    throw new Error('Failed to fetch locations from API');
   }
 }

@@ -1,22 +1,18 @@
-import { Flex, Heading,} from "@chakra-ui/react"
-import Trie from '../utils/trie'
-import { useEffect,useState,useRef } from "react"
-import { useSearchParams } from "react-router-dom";
-import AgeSlider from "./AgeSlider";
-import BreedsFilter from "./BreedsFilter";
+import { Flex, Heading } from '@chakra-ui/react';
+import AgeSlider from './AgeSlider';
+import BreedsFilter from './BreedsFilter';
+
 // import LocationFilter from "./LocationFilter";
-export default function Filters({breedNames}){
-    
-
-
-  
-
-    return (<>
-        <Flex justify={"center"} direction={"column"} gap={{base:3,md:10}}>
-        <Heading textAlign={'center'}>Filters</Heading>
-        <BreedsFilter breedNames={breedNames}/>
-        <AgeSlider/>
-        </Flex>
-        </>
-      );
-    }
+export default function Filters() {
+  return (
+    <>
+      <Flex justify={'center'} direction={'column'} gap={{ base: 3, md: 20 }} >
+        <Heading color={'purple.700'} textAlign={'center'}>Filters</Heading>
+        <AgeSlider />
+        <BreedsFilter />
+        
+      
+      </Flex>
+    </>
+  );
+}

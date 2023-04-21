@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 /**
  * Fetches a list of dog objects from the API based on a given list of dog IDs.
  *
@@ -7,15 +7,15 @@ import axios from "axios";
  * @see {@link https://frontend-take-home.fetch.com/}
  */
 export default async function fetchDogsById(dogIds) {
-    try {
-      const dogsResponse = await axios.post(
-        "https://frontend-take-home-service.fetch.com/dogs",
-        dogIds,
-        { withCredentials: true }
-      );
-      
-      let dogObjects = dogsResponse.data;
- 
+  try {
+    const dogsResponse = await axios.post(
+      'https://frontend-take-home-service.fetch.com/dogs',
+      dogIds,
+      { withCredentials: true }
+    );
+
+    let dogObjects = dogsResponse.data;
+
     // TODO: Modify dogObjects here as needed
     //   dogObjects = dogObjects.map((dog) => {
     //     return {
@@ -27,10 +27,9 @@ export default async function fetchDogsById(dogIds) {
     //       weight: dog.weight
     //     }
     //   });
-  
-      return dogObjects;
-    } catch (error) {
-      throw new Error("Failed to fetch dog objects from API.");
-    }
+
+    return dogObjects;
+  } catch (error) {
+    throw new Error('Failed to fetch dog objects from API.');
   }
-  
+}
