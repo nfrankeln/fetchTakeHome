@@ -20,9 +20,10 @@ export default function BreedsFilter() {
   const [input, setinput] = useState('');
   const inputRef = useRef(null);
   const handleInputChange = () => {
-    const inputValue = inputRef.current.value;
+    const inputValue = inputRef.current.value
+
     const modifiedValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
-    setinput(modifiedValue);
+    setinput(modifiedValue)
   };
   
   const [selectedBreeds, setSelectedBreeds] = useState(new Set());
@@ -79,7 +80,7 @@ export default function BreedsFilter() {
   }, [breedNames]);
 
   return (
-    <Menu zIndex={'dropdown'} flip={false} autoSelect={true} boundary={'scrollParent'} preventOverflow={true} closeOnSelect={false} >
+    <Menu zIndex={'dropdown'} initialFocusRef={inputRef} flip={false} autoSelect={true} boundary={'scrollParent'} preventOverflow={true} closeOnSelect={false} >
       <MenuButton
         bg={'purple.400'}
         _hover={{ bg: 'purple.300' }}
@@ -89,13 +90,14 @@ export default function BreedsFilter() {
         Breeds
       </MenuButton>
       <MenuList flexDirection={'column'}>
-        <MenuItem>
+  
           <Input
+            key={"breedsinput"}
             onClick={(e) => e.stopPropagation()}
             ref={inputRef} onChange={handleInputChange}
             type="text"
           />
-        </MenuItem>
+      
         
         <MenuList  maxHeight="50vh" overflowY="scroll">
           <CheckboxGroup>
