@@ -24,7 +24,7 @@ export default function DogCard({
   onRemove,
 }) {
   const [favorite, setFavorite] = useState(false);
-  const email = useOutletContext();
+
 
   useEffect(() => {
     const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -35,11 +35,11 @@ export default function DogCard({
   const handleFavoriteClick = () => {
     const dog = { id, name, img, age, breed, zip_code, location };
     const favorites =
-      JSON.parse(localStorage.getItem(`${email}favorites`)) || [];
+      JSON.parse(localStorage.getItem('favorites')) || [];
     if (favorite) {
       const updatedFavorites = favorites.filter((f) => f.id !== id);
       localStorage.setItem(
-        `${email}favorites`,
+        'favorites',
         JSON.stringify(updatedFavorites)
       );
       if (onRemove) {
@@ -48,7 +48,7 @@ export default function DogCard({
     } else {
       const updatedFavorites = [...favorites, dog];
       localStorage.setItem(
-        `${email}favorites`,
+        'favorites',
         JSON.stringify(updatedFavorites)
       );
     }
