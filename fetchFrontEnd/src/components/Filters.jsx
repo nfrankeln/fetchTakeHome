@@ -6,7 +6,7 @@ import BreedsFilter from './BreedsFilter';
 export default function Filters() {
   return (
     <>
-      <Flex justify={'center'} direction={'column'} gap={{ base: 3, md: 20 }}>
+      <Flex  justify={'center'} direction={'column'} gap={{ base: 3, md: 20 }}>
         <Heading color={'purple.700'} textAlign={'center'}>
           Filters
         </Heading>

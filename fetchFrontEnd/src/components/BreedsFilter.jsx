@@ -7,28 +7,32 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-} from "@chakra-ui/react";
-import Trie from "../utils/trie";
-import { useEffect, useRef, useState } from "react";
-import { useDisclosure } from "@chakra-ui/react";
-import { useSearchParams } from "react-router-dom";
-import axios from "axios";
+  filter,
+} from '@chakra-ui/react';
+import Trie from '../utils/trie';
+import { useEffect, useState , useRef} from 'react';
+import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function BreedsFilter() {
   const [breedNames, setBreedNames] = useState();
   const [trie, setTrie] = useState(null);
-  const [input, setInput] = useState("");
-  const [selectedBreeds, setSelectedBreeds] = useState(new Set());
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const { isOpen, onOpen } = useDisclosure();
+  const [input, setinput] = useState('');
   const inputRef = useRef(null);
+  const handleInputChange = () => {
+    const inputValue = inputRef.current.value;
+    const modifiedValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+    setinput(modifiedValue);
+  };
+  
+  const [selectedBreeds, setSelectedBreeds] = useState(new Set());
+  let [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://frontend-take-home-service.fetch.com/dogs/breeds",
+          'https://frontend-take-home-service.fetch.com/dogs/breeds',
           { withCredentials: true }
         );
         setBreedNames(response.data);
@@ -42,12 +46,12 @@ export default function BreedsFilter() {
   useEffect(() => {
     if (selectedBreeds.size > 0) {
       setSearchParams((prevParams) =>
-        prevParams.set("breeds", [...selectedBreeds].join(","))
+        prevParams.set('breeds', [...selectedBreeds].join(','))
       );
-      searchParams.delete("page");
+      searchParams.delete('page');
       setSearchParams(searchParams);
     } else {
-      searchParams.delete("breeds");
+      searchParams.delete('breeds');
       setSearchParams(searchParams);
     }
   }, [selectedBreeds, setSelectedBreeds]);
@@ -74,59 +78,33 @@ export default function BreedsFilter() {
     }
   }, [breedNames]);
 
-  useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isOpen]);
-
   return (
-    <Menu zIndex={"dropdown"} closeOnSelect={false}  >
+    <Menu zIndex={'dropdown'} closeOnSelect={false} >
       <MenuButton
-        bg={"purple.400"}
-        _hover={{ bg: "purple.300" }}
-        color={"white"}
-        onClick={onOpen}
+        bg={'purple.400'}
+        _hover={{ bg: 'purple.300' }}
+        color={'white'}
         as={Button}
       >
         Breeds
       </MenuButton>
-      <MenuList flexDirection={"column"} 
-       sx={{
-        "&[data-popper-placement^='bottom']": {
-          transform: "translate3d(0, 0, 0) !important",
-        },
-      }}
-      portalProps={{ position: "relative" }}
-      
-      onClose={() => setInput("")}>
+      <MenuList flexDirection={'column'}>
         <MenuItem>
           <Input
-            ref={inputRef}
             onClick={(e) => e.stopPropagation()}
-            onChange={(e) => setInput(e.target.value)}
+            ref={inputRef} onChange={handleInputChange}
             type="text"
-            value={input}
           />
         </MenuItem>
-        <MenuList maxHeight="50vh"
-         sx={{
-          "&[data-popper-placement^='bottom']": {
-            transform: "translate3d(0, 0, 0) !important",
-          },
-        }}
-        portalProps={{ position: "relative" }}
-        overflowY="scroll">
+        <MenuList maxHeight="50vh" overflowY="scroll">
           <CheckboxGroup>
             {trie &&
               trie.autocomplete(input).map((name) => (
                 <MenuItem
                   as={Checkbox}
                   value={name}
-                  isChecked={selectedBreeds.has(name)}
                   onChange={(e) => {
-                    e.target.checked 
- ? addItem(name) : removeItem(name);
+                    e.target.checked ? addItem(name) : removeItem(name);
                   }}
                   key={name}
                 >
