@@ -58,7 +58,7 @@ export default function DogCard({
   return (
     <>
       <Card maxW="xs" boxShadow={'md'} alignItems={'center'}>
-        <CardBody p={0}>
+        <CardBody margin={0} p={0}>
           <Image
             boxSize={['xs', 'xs']}
             src={img}

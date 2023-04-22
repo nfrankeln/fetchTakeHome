@@ -36,11 +36,12 @@ export default function SearchResults() {
       <Flex
         p={5}
         justifyContent={'space-between'}
-        alignItems={'flex-end'}
-        flexDirection={'row-reverse'}
+        alignItems={{base: 'flex-start', md:'flex-end'}}
+        flexDirection={{base:'column', md:'row-reverse'}}
+        gap={{base: '15px' , md:0}}
+
       >
         <LocationSearch />
-
         <SortMenu />
       </Flex>
 
