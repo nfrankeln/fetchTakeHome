@@ -13,8 +13,8 @@ export default function Navbar() {
   function logout() {
     axios.post('https://frontend-take-home-service.fetch.com/auth/logout', {
       withCredentials: true,
-    });
-    setIsLoggedIn(false).then(navigate('/'));
+    })
+    .then(setIsLoggedIn(false)).then(navigate('/'));
   }
 
   return (
