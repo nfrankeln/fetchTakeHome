@@ -80,7 +80,7 @@ export default function BreedsFilter() {
   }, [breedNames]);
 
   return (
-    <Menu zIndex={'dropdown'} initialFocusRef={inputRef} flip={false} autoSelect={true} boundary={'scrollParent'} preventOverflow={true} closeOnSelect={false} >
+    <Menu zIndex={'dropdown'}  initialFocusRef={inputRef} flip={false} boundary={'scrollParent'} preventOverflow={true} closeOnSelect={false} >
       <MenuButton
         bg={'purple.400'}
         _hover={{ bg: 'purple.300' }}
@@ -93,6 +93,7 @@ export default function BreedsFilter() {
   
           <Input
             key={"breedsinput"}
+            
             onClick={(e) => e.stopPropagation()}
             ref={inputRef} onChange={handleInputChange}
             type="text"
