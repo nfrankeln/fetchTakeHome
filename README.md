@@ -53,5 +53,5 @@ Once a user is successfully authenticated, they should be brought to a search pa
 1. learn how to effectivly order routes to avoid unessary rereders 
 2. learn how to use chakra ui themes to avoid having to add styles directly on components
 3. start with a testing framework
-4. learn how to auto generate documentation and docstrings
+4. learn storybook to document my work
 
