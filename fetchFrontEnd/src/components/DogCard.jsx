@@ -2,7 +2,6 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Flex,
   HStack,
   VStack,
   Heading,
@@ -10,11 +9,55 @@ import {
   Icon,
   Text,
 } from '@chakra-ui/react';
-import { AiFillHeart , AiOutlineHeart } from 'react-icons/ai';
-export default function DogCard({ name, img, age, breed, zip_code, location }) {
+import { useEffect, useState } from 'react';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { useOutletContext } from 'react-router-dom';
+
+export default function DogCard({
+  name,
+  img,
+  age,
+  breed,
+  zip_code,
+  location,
+  id,
+  onRemove,
+}) {
+  const [favorite, setFavorite] = useState(false);
+  const email = useOutletContext();
+
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const isFavorite = favorites.some((dog) => dog.id === id);
+    setFavorite(isFavorite);
+  }, [id]);
+
+  const handleFavoriteClick = () => {
+    const dog = { id, name, img, age, breed, zip_code, location };
+    const favorites =
+      JSON.parse(localStorage.getItem(`${email}favorites`)) || [];
+    if (favorite) {
+      const updatedFavorites = favorites.filter((f) => f.id !== id);
+      localStorage.setItem(
+        `${email}favorites`,
+        JSON.stringify(updatedFavorites)
+      );
+      if (onRemove) {
+        onRemove(id);
+      }
+    } else {
+      const updatedFavorites = [...favorites, dog];
+      localStorage.setItem(
+        `${email}favorites`,
+        JSON.stringify(updatedFavorites)
+      );
+    }
+    setFavorite(!favorite);
+  };
+
   return (
     <>
-      <Card maxW="xs" boxShadow={'md'} alignItems={'center'} >
+      <Card maxW="xs" boxShadow={'md'} alignItems={'center'}>
         <CardBody p={0}>
           <Image
             boxSize={['xs', 'xs']}
@@ -35,16 +78,22 @@ export default function DogCard({ name, img, age, breed, zip_code, location }) {
             </Heading>
             <HStack w={'100%'} justify={'space-between'}>
               <VStack alignItems={'flex-start'}>
-                <Text color={'purple.400'} fontSize={'md'}>{breed}</Text>
+                <Text color={'purple.400'} fontSize={'md'}>
+                  {breed}
+                </Text>
                 <Text color={'purple.400'} fontSize={'md'}>
                   {location
                     ? `${location.city}, ${location.state}`
                     : `zip code, ${zip_code}`}
                 </Text>
               </VStack>
-              
-                <Icon boxSize={10} color={'purple.400'} as={AiOutlineHeart} _hover={{color: "purple.700"}} />
-             
+              <Icon
+                boxSize={10}
+                color={favorite ? 'purple.700' : 'purple.400'}
+                as={favorite ? AiFillHeart : AiOutlineHeart}
+                _hover={{ color: 'purple.700' }}
+                onClick={handleFavoriteClick}
+              />
             </HStack>
           </VStack>
         </CardBody>

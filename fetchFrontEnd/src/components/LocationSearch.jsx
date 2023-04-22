@@ -1,6 +1,5 @@
 import {
   FormControl,
-  FormLabel,
   Input,
   InputGroup,
   FormErrorMessage,
@@ -30,11 +29,11 @@ export default function LocationSearch() {
   return (
     <form w={{ base: '100%', md: '35%' }} onSubmit={handleSubmit(getGeoData)}>
       <FormControl isInvalid={errors.zipCode}>
-  
         <InputGroup>
-          <Input bg={'purple.100'}
-        borderRadius="full"
-        border="1px"
+          <Input
+            bg={'purple.100'}
+            borderRadius="full"
+            border="1px"
             {...register('zipCode', {
               required: 'Zip code is required',
               pattern: {
@@ -47,7 +46,13 @@ export default function LocationSearch() {
           />
 
           <InputRightElement w={'35%'}>
-            <Button bg={'purple.400'}  borderRightRadius={'full'} color={'white'} _hover={{bg: 'purple.300'}} type="submit" >
+            <Button
+              bg={'purple.400'}
+              borderRightRadius={'full'}
+              color={'white'}
+              _hover={{ bg: 'purple.300' }}
+              type="submit"
+            >
               Sumbit
             </Button>
           </InputRightElement>

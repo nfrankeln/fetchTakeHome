@@ -11,9 +11,10 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
+
 import login from '../utils/login';
 
-export default function LoginPage() {
+export default function LoginPage({ setIsLoggedIn }) {
   const {
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -22,15 +23,16 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   async function onSubmit(data) {
-    const loginSuccess = await login(data);
-    if (loginSuccess) {
+    const response = await login(data);
+    if (response) {
+      setIsLoggedIn(true);
       navigate('search');
     }
   }
 
   return (
     <Container>
-      <Stack mt={12} spacing={4} align="center"> 
+      <Stack mt={12} spacing={4} align="center">
         <Heading>Login</Heading>
 
         <form onSubmit={handleSubmit(onSubmit)}>

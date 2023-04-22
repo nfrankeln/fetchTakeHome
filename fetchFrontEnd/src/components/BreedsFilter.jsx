@@ -15,7 +15,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 export default function BreedsFilter() {
-  const [breedNames,setBreedNames] = useState()
+  const [breedNames, setBreedNames] = useState();
   const [trie, setTrie] = useState(null);
   const [input, setinput] = useState('');
   const [selectedBreeds, setSelectedBreeds] = useState(new Set());
@@ -24,7 +24,10 @@ export default function BreedsFilter() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://frontend-take-home-service.fetch.com/dogs/breeds", { withCredentials: true });
+        const response = await axios.get(
+          'https://frontend-take-home-service.fetch.com/dogs/breeds',
+          { withCredentials: true }
+        );
         setBreedNames(response.data);
       } catch (error) {
         console.error(error);
@@ -32,9 +35,7 @@ export default function BreedsFilter() {
     };
     fetchData();
   }, []);
-  
 
- 
   useEffect(() => {
     if (selectedBreeds.size > 0) {
       setSearchParams((prevParams) =>
@@ -47,10 +48,6 @@ export default function BreedsFilter() {
       setSearchParams(searchParams);
     }
   }, [selectedBreeds, setSelectedBreeds]);
-
-  
-
-
 
   const addItem = (item) => {
     setSelectedBreeds((prev) => new Set(prev).add(item));
@@ -67,16 +64,23 @@ export default function BreedsFilter() {
   };
 
   useEffect(() => {
-    if (breedNames){
-    const trieInstance = new Trie();
-    breedNames.forEach((name) => trieInstance.insert(name));
-    setTrie(trieInstance);}
+    if (breedNames) {
+      const trieInstance = new Trie();
+      breedNames.forEach((name) => trieInstance.insert(name));
+      setTrie(trieInstance);
+    }
   }, [breedNames]);
-
 
   return (
     <Menu zIndex={'dropdown'} closeOnSelect={false} offset={[0, 0]}>
-      <MenuButton bg={'purple.400'} _hover={{bg: 'purple.300'}} color={'white'} as={Button}>Breeds</MenuButton>
+      <MenuButton
+        bg={'purple.400'}
+        _hover={{ bg: 'purple.300' }}
+        color={'white'}
+        as={Button}
+      >
+        Breeds
+      </MenuButton>
       <MenuList flexDirection={'column'}>
         <MenuItem>
           <Input
@@ -93,7 +97,6 @@ export default function BreedsFilter() {
                   as={Checkbox}
                   value={name}
                   onChange={(e) => {
-  
                     e.target.checked ? addItem(name) : removeItem(name);
                   }}
                   key={name}

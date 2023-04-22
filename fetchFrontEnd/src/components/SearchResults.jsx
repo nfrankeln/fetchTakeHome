@@ -1,15 +1,11 @@
-import { useLoaderData, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import fetchLocationsFromZip from '../utils/fetchLocationsFromZip';
 import fetchDogIds from '../utils/fetchDogIds';
 import fetchDogsById from '../utils/fetchDogsById';
 import fetchLocations from '../utils/fetchLoactions';
 import addLocationToDogs from '../helpers/addLocationToDogs';
 import {
-  Box,
   Flex,
-  FormControl,
-  FormLabel,
-  Select,
   SimpleGrid,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
@@ -37,18 +33,26 @@ export default function SearchResults() {
 
   return (
     <>
-      <Flex p={5} justifyContent={'space-between'} alignItems={'flex-end'} flexDirection={'row-reverse'}>
+      <Flex
+        p={5}
+        justifyContent={'space-between'}
+        alignItems={'flex-end'}
+        flexDirection={'row-reverse'}
+      >
         <LocationSearch />
-       
+
         <SortMenu />
       </Flex>
 
-      <SimpleGrid minChildWidth={'275px'} spacing={6} padding="10px">
+      <SimpleGrid
+        columns={{ base: 1, sm: 2, lg: 3, xl: 4 }}
+        spacing={6}
+        padding="10px"
+      >
         {data.dogs && <Dogs dogs={data.dogs} />}
       </SimpleGrid>
       {data.totalPages > 0 && (
         <PagePagination
-        
           currentPage={currentPage}
           totalPages={data.totalPages}
           onPageChange={(selectedPage) => {
