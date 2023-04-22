@@ -79,7 +79,7 @@ export default function BreedsFilter() {
   }, [breedNames]);
 
   return (
-    <Menu zIndex={'dropdown'} closeOnSelect={false} >
+    <Menu zIndex={'dropdown'} flip={false} autoSelect={true} boundary={'scrollParent'} preventOverflow={true} closeOnSelect={false} >
       <MenuButton
         bg={'purple.400'}
         _hover={{ bg: 'purple.300' }}
@@ -96,7 +96,8 @@ export default function BreedsFilter() {
             type="text"
           />
         </MenuItem>
-        <MenuList maxHeight="50vh" overflowY="scroll">
+        
+        <MenuList  maxHeight="50vh" overflowY="scroll">
           <CheckboxGroup>
             {trie &&
               trie.autocomplete(input).map((name) => (
