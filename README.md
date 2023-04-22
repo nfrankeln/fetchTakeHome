@@ -1,4 +1,5 @@
-Sure, here are the installation steps and project details formatted:
+
+[See it live](https://stellar-sprinkles-826280.netlify.app/)
 
 ## Installation Steps:
 
