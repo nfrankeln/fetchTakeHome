@@ -4,10 +4,7 @@ import fetchDogIds from '../utils/fetchDogIds';
 import fetchDogsById from '../utils/fetchDogsById';
 import fetchLocations from '../utils/fetchLoactions';
 import addLocationToDogs from '../helpers/addLocationToDogs';
-import {
-  Flex,
-  SimpleGrid,
-} from '@chakra-ui/react';
+import { Flex, SimpleGrid } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { PagePagination } from './PagePagination';
 import LocationSearch from './LocationSearch';
@@ -16,6 +13,7 @@ import SortMenu from './SortMenu';
 
 export default function SearchResults() {
   const [data, setData] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   let [searchParams, setSearchParams] = useSearchParams();
 
@@ -36,10 +34,9 @@ export default function SearchResults() {
       <Flex
         p={5}
         justifyContent={'space-between'}
-        alignItems={{base: 'flex-start', md:'flex-end'}}
-        flexDirection={{base:'column', md:'row-reverse'}}
-        gap={{base: '15px' , md:0}}
-
+        alignItems={{ base: 'flex-start', md: 'flex-end' }}
+        flexDirection={{ base: 'column', md: 'row-reverse' }}
+        gap={{ base: '15px', md: 0 }}
       >
         <LocationSearch />
         <SortMenu />
@@ -52,6 +49,7 @@ export default function SearchResults() {
       >
         {data.dogs && <Dogs dogs={data.dogs} />}
       </SimpleGrid>
+
       {data.totalPages > 0 && (
         <PagePagination
           currentPage={currentPage}

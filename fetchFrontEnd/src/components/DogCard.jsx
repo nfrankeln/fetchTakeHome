@@ -25,7 +25,6 @@ export default function DogCard({
 }) {
   const [favorite, setFavorite] = useState(false);
 
-
   useEffect(() => {
     const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     const isFavorite = favorites.some((dog) => dog.id === id);
@@ -34,23 +33,16 @@ export default function DogCard({
 
   const handleFavoriteClick = () => {
     const dog = { id, name, img, age, breed, zip_code, location };
-    const favorites =
-      JSON.parse(localStorage.getItem('favorites')) || [];
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     if (favorite) {
       const updatedFavorites = favorites.filter((f) => f.id !== id);
-      localStorage.setItem(
-        'favorites',
-        JSON.stringify(updatedFavorites)
-      );
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
       if (onRemove) {
         onRemove(id);
       }
     } else {
       const updatedFavorites = [...favorites, dog];
-      localStorage.setItem(
-        'favorites',
-        JSON.stringify(updatedFavorites)
-      );
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
     }
     setFavorite(!favorite);
   };

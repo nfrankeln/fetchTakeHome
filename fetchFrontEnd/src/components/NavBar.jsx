@@ -11,11 +11,10 @@ export default function Navbar() {
   const [activeLink, setActiveLink] = useState();
   axios.defaults.withCredentials = true;
   function logout() {
-    axios
-      .post('https://frontend-take-home-service.fetch.com/auth/logout', {
-        withCredentials: true,
-      })
-      .then(navigate('/'));
+    axios.post('https://frontend-take-home-service.fetch.com/auth/logout', {
+      withCredentials: true,
+    });
+    setIsLoggedIn(false).then(navigate('/'));
   }
 
   return (

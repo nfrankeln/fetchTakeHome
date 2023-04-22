@@ -1,5 +1,3 @@
-
-
 import { Outlet } from 'react-router-dom';
 
 import SplitScreenLayout from '../layouts/SplitScreenLayout';
@@ -7,7 +5,6 @@ import { Flex, Box } from '@chakra-ui/react';
 import Filters from '../components/Filters';
 
 export default function SearchPage() {
-  console.log('rerender');
   return (
     <>
       <Box>

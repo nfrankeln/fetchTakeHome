@@ -1,4 +1,4 @@
-import { Container, Heading } from '@chakra-ui/react';
+import { Card, Container, Heading } from '@chakra-ui/react';
 import { getFavDogs } from './FavoritesPage';
 import axios from 'axios';
 import { useLoaderData } from 'react-router-dom';
@@ -9,8 +9,14 @@ export default function MatchPage() {
   console.log(match);
   return (
     <Container>
-      <Heading>Your New Best Friend</Heading>
-      <DogCard {...match} />
+      {match ? (
+        <>
+          <Heading>Your New Best Friend</Heading>
+          <DogCard {...match} />
+        </>
+      ) : (
+        <Heading>You need to add some favorites to get a match</Heading>
+      )}
     </Container>
   );
 }
@@ -18,7 +24,7 @@ export default function MatchPage() {
 // Loader
 export async function getMatch() {
   const favorites = getFavDogs();
-  if (favorites.length > 0) {
+  if (favorites.length > 0 && favorites !== null) {
     const dogIds = favorites.map((dog) => dog.id);
     console.log(dogIds);
     const response = await axios.post(
@@ -27,6 +33,9 @@ export async function getMatch() {
       { withCredentials: 'include' }
     );
     const match = favorites.filter((dog) => dog.id === response.data.match);
-    return match[0];
+    if (match) {
+      return match[0];
+    }
   }
+  return null;
 }
