@@ -16,11 +16,13 @@ export default function SearchResults() {
 
   const [currentPage, setCurrentPage] = useState(1);
   let [searchParams, setSearchParams] = useSearchParams();
-
+  let [loaded, setLoaded] = useState(false)
   useEffect(() => {
     const fetchData = async () => {
+      setLoaded(false)
       const repsonse = await dogsLoader(searchParams);
       setData(repsonse);
+      setLoaded(true)
     };
     fetchData();
   }, [searchParams]);
@@ -42,13 +44,14 @@ export default function SearchResults() {
         <SortMenu />
       </Flex>
 
-      <SimpleGrid
+      {loaded? <SimpleGrid
         columns={{ base: 1, sm: 2, lg: 3, xl: 4 }}
         spacing={6}
         padding="10px"
       >
         {data.dogs && <Dogs dogs={data.dogs} />}
-      </SimpleGrid>
+      </SimpleGrid>:
+      <p>Loading..</p> }
 
       {data.totalPages > 0 && (
         <PagePagination
